@@ -45,10 +45,20 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.4</version>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.cassandra</groupId>
+            <artifactId>cassandra-all</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-cassandra</artifactId>
+            <version>1.56.27-SNAPSHOT</version>
+        </dependency>
 		<dependency>
 			<groupId>com.netflix.astyanax</groupId>
-			<artifactId>astyanax</artifactId>
-			<version>1.0.1</version>
+			<artifactId>astyanax-thrift</artifactId>
+			<version>1.56.27-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-lang</artifactId>
