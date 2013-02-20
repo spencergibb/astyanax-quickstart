@@ -5,7 +5,7 @@ This is a quick demo/quickstart application that uses Astyanax to connect to Cas
 
 We'll use the following schema:
 
-		CREATE KEYSPACE examples WITH strategy_class = 'NetworkTopologyStrategy' AND strategy_options:datacenter1 = '1';
+		CREATE KEYSPACE examples WITH REPLICATION = {'CLASS' : 'SimpleStrategy', 'replication_factor': 1};
   
 		use examples;
 
