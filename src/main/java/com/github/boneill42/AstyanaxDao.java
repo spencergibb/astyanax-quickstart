@@ -28,6 +28,9 @@ public class AstyanaxDao {
     private Keyspace keyspace;
     private AstyanaxContext<Keyspace> astyanaxContext;
 
+    public static final String SELECT_STATEMENT = "SELECT * FROM fishblogs WHERE userid=?;";
+    public static final String INSERT_STATEMENT = "INSERT INTO fishblogs (userid, when, fishtype, blog, image) VALUES (?, ?, ?, ?, ?);";
+
     public AstyanaxDao(String host, String keyspace) {
         try {
             this.astyanaxContext = new AstyanaxContext.Builder()
@@ -120,7 +123,6 @@ public class AstyanaxDao {
     }
 
     public CqlResult<String, String> readWithCql(String columnFamilyName, String userid) throws ConnectionException {
-        final String SELECT_STATEMENT = "SELECT * FROM fishblogs WHERE userid=?;";
 
         ColumnFamily<String, String> columnFamily = new ColumnFamily<String, String>(
                 columnFamilyName,
@@ -136,22 +138,19 @@ public class AstyanaxDao {
         return result.getResult();
     }
 
-    public OperationResult<CqlResult<String, String>> writeWithCql(String columnFamilyName) throws ConnectionException {
-        final String INSERT_STATEMENT = "INSERT INTO fishblogs (userid, when, fishtype, blog, image) VALUES (?, ?, ?, ?, ?);";
+    public OperationResult<CqlResult<String, String>> writeWithCql(String columnFamilyName, String userid, long when, String fishtype, String blog, byte[] image) throws ConnectionException {
 
         ColumnFamily<String, String> columnFamily = ColumnFamily.newColumnFamily(columnFamilyName,
                 StringSerializer.get(), StringSerializer.get());
 
-        byte[] bytes = new byte[10];
-        bytes[0] = 2;
         OperationResult<CqlResult<String, String>> result = keyspace.prepareQuery(columnFamily)
                 .withCql(INSERT_STATEMENT)
                 .asPreparedStatement()
-                .withStringValue("bigcat")
-                .withLongValue(System.currentTimeMillis())
-                .withStringValue("TROUT")
-                .withStringValue("this is more blog")
-                .withValue(ByteBuffer.wrap(bytes))
+                .withStringValue(userid)
+                .withLongValue(when)
+                .withStringValue(fishtype)
+                .withStringValue(blog)
+                .withValue(ByteBuffer.wrap(image))
                 .execute();
 
         return result;

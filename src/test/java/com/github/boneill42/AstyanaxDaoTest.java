@@ -78,7 +78,9 @@ public class AstyanaxDaoTest {
 
     @Test
     public void testFishblogCql3Write() throws ConnectionException {
-        dao.writeWithCql("fishblogs");
+        byte[] image = new byte[10];
+        image[0] = 2;
+        dao.writeWithCql("fishblogs", "bigcat", System.currentTimeMillis(), "TROUT", "this is more blog", image);
     }
 
 
